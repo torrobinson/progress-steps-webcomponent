@@ -1,0 +1,33 @@
+{
+	"name": "progress-steps-webcomponent",
+	"version": "1.0.0",
+	"description": "A web component for displaying the steps of a process and letting users move between them",
+	"main": "dist/progress-steps.min.js",
+	"directories": {
+		"doc": "docs"
+	},
+	"scripts": {
+		"build": "node build.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/torrobinson/progress-steps.git"
+	},
+	"keywords": [
+		"wizard",
+		"progress-bar",
+		"progress",
+		"step",
+		"steps"
+	],
+	"author": "Tor Robinson",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/torrobinson/progress-steps/issues"
+	},
+	"homepage": "https://github.com/torrobinson/progress-steps#readme",
+	"dependencies": {},
+	"devDependencies": {
+		"uglify-js": "^3.13.8"
+	}
+}

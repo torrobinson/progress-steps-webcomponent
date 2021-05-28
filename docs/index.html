@@ -1,1 +1,172 @@
+<html>
+	<head>
+		<title>Progress Steps Demo</title>
+		<!-- <script src="../src/progress-steps.js"></script> -->
+		<script src="../dist/progress-steps.min.js"></script>
+	</head>
+	<body>
+		<!-- The web component -->
+		<progress-steps id="my-steps"></progress-steps>
 
+		<!-- API demonstration -->
+		<br />
+		<br />
+		<div>
+			<label style="font-weight: bold">Click steps to change</label>
+			<br />
+
+			<label> -OR- </label> <br />
+
+			<label style="font-weight: bold">API interaction:</label> <br />
+			<button id="step-down">Step -</button
+			><button id="step-up">Step +</button>
+			<br />
+			<button id="step-zero">Step = 0</button
+			><button id="step-one">Step = 1</button
+			><button id="step-two">Step = 2</button
+			><button id="step-three">Step = 3</button
+			><button id="step-four">Step = 4</button>
+			<br />
+			<button id="step-neg-one">Step = -1 (throws error)</button>
+
+			<br /><br />
+			<button id="disable-four">Disable Step 4</button
+			><button id="enable-four">Enable Step 4</button>
+		</div>
+
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				// Find the control
+				let myStepper = document.querySelector('#my-steps');
+
+				// And initialize it
+				myStepper.init({
+					steps: [
+						{
+							name: 'Step 1',
+						},
+						{
+							name: 'Step 2',
+						},
+						{
+							name: 'Step 3',
+						},
+						{
+							name: 'Step 4',
+						},
+						{
+							name: 'Step 5',
+							disabled: true,
+						},
+						{
+							name: 'Step 6',
+							disabled: true,
+						},
+					],
+					events: {
+						onStepChanged: function (step) {
+							console.log(`Step changed to ${step}!`);
+						},
+					},
+					// Optional styling
+					style: {
+						stepWidth: 20,
+						fontSize: 12,
+						borderRadius: '25%',
+						lineThickness: 2,
+						animationSpeed: '500ms',
+
+						// Labels
+						showLabels: true,
+						labelSpacing: 5,
+						//stepLabelFontWeight: 'normal',
+
+						// Label Colors
+						//previousLabelFontColor: 'red',
+
+						//currentLabelFontColor: 'blue',
+						//currentStepLabelFontWeight: 'bold',
+
+						//futureLabelFontColor: 'green',
+
+						//disabledLabelFontColor: 'maroon',
+
+						// The fill color for the lines and bars of active and previous steps
+						progressFillColor: '#cf78d9',
+						//progressUnfilledColor: '#d5dce2'
+
+						//currentStepFontColor: 'white',
+						//futureStepFillColor: 'orange',
+
+						//disabledStepFontColor: 'red',
+						//disabledStepFillColor: 'blue'
+					},
+				});
+
+				// Set intial value
+				myStepper.setStep(3);
+
+				// Bind demo buttons
+				document
+					.querySelector('#step-neg-one')
+					.addEventListener('click', function () {
+						myStepper.setStep(-1);
+					});
+
+				document
+					.querySelector('#step-zero')
+					.addEventListener('click', function () {
+						myStepper.setStep(0);
+					});
+
+				document
+					.querySelector('#step-one')
+					.addEventListener('click', function () {
+						myStepper.setStep(1);
+					});
+
+				document
+					.querySelector('#step-two')
+					.addEventListener('click', function () {
+						myStepper.setStep(2);
+					});
+
+				document
+					.querySelector('#step-three')
+					.addEventListener('click', function () {
+						myStepper.setStep(3);
+					});
+
+				document
+					.querySelector('#step-four')
+					.addEventListener('click', function () {
+						myStepper.setStep(4);
+					});
+
+				document
+					.querySelector('#step-up')
+					.addEventListener('click', function () {
+						myStepper.stepUp();
+					});
+
+				document
+					.querySelector('#step-down')
+					.addEventListener('click', function () {
+						myStepper.stepDown();
+					});
+
+				document
+					.querySelector('#enable-four')
+					.addEventListener('click', function () {
+						myStepper.enableStep(4);
+					});
+
+				document
+					.querySelector('#disable-four')
+					.addEventListener('click', function () {
+						myStepper.disableStep(4);
+					});
+			});
+		</script>
+	</body>
+</html>
