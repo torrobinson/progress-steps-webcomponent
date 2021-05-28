@@ -73,6 +73,24 @@ myStepper.init({
 });
 ```
 
+### Events
+
+| Event Name    | Parameters            | Description                    |
+| ------------- | --------------------- | ------------------------------ |
+| onStepChanged | (stepNumber, stepObj) | Fired when the step is changed |
+
+### Methods
+
+| Method Name | Parameters | Description                                                     |
+| ----------- | ---------- | --------------------------------------------------------------- |
+| init        | (options)  | Initializes the control. See above examples for `options` usage |
+| getStep     |            | Returns the step object of the current active step              |
+| setStep     | (step)     | Takes in the step number of the step to change to               |
+| stepUp      |            | Increments the current active step                              |
+| stepDown    |            | Decrements the current active step                              |
+| disableStep | (step)     | Takes in the step number of a step and disables it from use     |
+| enableStep  | (step)     | Takes in the step number of a step and enables it for use       |
+
 ### Styling
 
 Styling can be overridden by passing in CSS values to the `style` object. All options are entirely optional.
