@@ -10,9 +10,10 @@ A web component for displaying the steps of a process and letting users move bet
 
 ### CDN
 
-Use the built file from npm via
+Use the built file from npm from https://unpkg.com/progress-steps-webcomponent@latest
 
 ```html
+<!-- For example -->
 <script src="https://unpkg.com/progress-steps-webcomponent@latest"></script>
 ```
 
@@ -131,11 +132,11 @@ myStepper.init({
 		// The color to fill up, left-to-right, as steps are set to active
 		progressFillColor: '#cf78d9',
 		// The default color of the unfilled section of line and steps after the active step
-		progressUnfilledColor: '#d5dce2'
+		progressUnfilledColor: '#d5dce2',
 		// The font color of the step icon that is currently active
 		currentStepFontColor: 'white',
 		// The fill-color for step icons that are after the current active step
-		futureStepFillColor: 'orange'
+		futureStepFillColor: 'orange',
 		// The font color of the disabled steps
 		disabledStepFontColor: 'red',
 		// The fill-color for disabled step icons
