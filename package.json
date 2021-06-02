@@ -1,6 +1,6 @@
 {
 	"name": "progress-steps-webcomponent",
-	"version": "1.0.0",
+	"version": "1.0.2",
 	"description": "A web component for displaying the steps of a process and letting users move between them",
 	"main": "dist/progress-steps.min.js",
 	"directories": {

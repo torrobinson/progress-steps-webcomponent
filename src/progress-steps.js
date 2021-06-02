@@ -44,175 +44,176 @@ class ProgressSteps extends HTMLElement {
 		this._shadowRoot.append(
 			stringToHTML(`
     	<style>
-				.progress-steps {
-            /* All Steps */
-            --font-size: 15px;
-            --bar-thickness: 2px;
-            --step-border-radius: 50%;
-            --animation-speed: 0.5s;
+            .progress-steps {
+                /* All Steps */
+                --font-size: 15px;
+                --bar-thickness: 2px;
+                --step-border-radius: 50%;
+                --animation-speed: 0.5s;
 
-            /* Default, Inactive Steps */
-            --step-color: white;
-            --step-width: 35px;
+                /* Default, Inactive Steps */
+                --step-color: white;
+                --step-width: 35px;
+                
+                --previous-label-font-color: black;
+
+                /* Current Steps */
+                --fill-color: #7A5BD3;
+                --current-font-color: white;
+                --current-step-label-weight: bold;
+                --current-step-shadow: none;
+                --current-label-font-color: var(--fill-color);
+
+                
+                --unfilled-color: #d5dce2;
+                --disabled-fill-color: var(--unfilled-color);
+                --disabled-font-color: #8B9DAC;
+                --disabled-label-font-color: var(--unfilled-color);
+                
+                /* Future Steps */
+                --future-label-font-color: var( --unfilled-color);
+
+
+                /* Labels */
+                --step-title-display: inline-block;
+                --step-title-top-padding: 5px;
+                --step-title-width: 75px; /* Note: this is overriden immedidately and when browser is resized */
+                --step-title-font: sans-serif;
+                --step-title-weight: normal;
+
+
+                display: flex;
+                margin: 0 auto;
+                position: relative;
+                width: calc(100% - (var(--step-title-width)-var(--step-width))/1);
+                transition: width var(--animation-speed);
+                justify-content: space-between;
+            }
+
+            /* The underlying grey line*/
+            .progress-steps::before {
+                content: '';
+                z-index: 1;
+                display: block;
+                position: absolute;
+                width: calc(100% - var(--step-width));
+                left: calc(var(--step-width)/2);
+                height: 0px;
+                top: calc( (var(--step-width)/2) - (var(--bar-thickness)/2) );
+                border: none;
+                border-bottom: var(--bar-thickness) solid var(--unfilled-color);
+            }
+
+            /* The overlapping colored value line*/
+            .progress-steps .completion-bar {
+                content: '';
+                z-index: 2;
+                display: block;
+                position: absolute;
+                width: 0%;
+                transition: width var(--animation-speed);
+                height: 0px;
+                top: calc( (var(--step-width)/2) - (var(--bar-thickness)/2) );
+                left: calc(var(--step-width)/2);
+                border: none;
+                border-bottom: var(--bar-thickness) solid var(--fill-color);
+            }
+
+            /* The colored balls */
+            .progress-steps .progress-step::before {
+                content: attr(data-step-number);
+                z-index: 3;
+                width: calc(var(--step-width) - var(--bar-thickness)*2);
+                height: calc(var(--step-width) - var(--bar-thickness)*2);
+                background-color: var(--step-color);
+                border: var(--bar-thickness) solid var(--unfilled-color);
+                color: var(--unfilled-color);
+                border-radius: var(--step-border-radius);
+                position: relative;
+                transition: background-color var(--animation-speed);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: var(--step-title-font);
+            }
+
+            .progress-steps .progress-step.previous::before, .progress-steps .progress-step.current::before{
+                color: var(--current-font-color);
+                background-color: var(--fill-color);
+                border: none;
+                width: var(--step-width);
+                height: var(--step-width);
+            }
             
-            --previous-label-font-color: black;
 
-            /* Current Steps */
-            --fill-color: #7A5BD3;
-            --current-font-color: white;
-            --current-step-label-weight: bold;
-            --current-step-shadow: none;
-            --current-label-font-color: var(--fill-color);
+            .progress-steps .progress-step.current .progress-title {
+                color: var(--current-label-font-color) !important;
+                font-weight: var(--current-label-font-weight);
+                font-weight: var(--current-step-label-weight) !important;
+            }
+            .progress-steps .progress-step.current::before {
+                background-color: var(--fill-color);
+                box-shadow: var(--current-step-shadow);
+            }
 
+
+            .progress-steps .progress-step.disabled::before {
+                background-color: var(--disabled-fill-color);
+                border-color: var(--unfilled-color);
+                color: var(--disabled-font-color);
+            }
+
+            .progress-steps .progress-step.disabled {
+                cursor: not-allowed;
+            }
+
+            .progress-steps .progress-step:not(.disabled) {
+                cursor: pointer;
+            }
+
+            .progress-steps .progress-step {
+                justify-content: space-evenly;
+                font-size: var(--font-size);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
             
-            --unfilled-color: #d5dce2;
-            --disabled-fill-color: var(--unfilled-color);
-            --disabled-font-color: #8B9DAC;
-            --disabled-label-font-color: var(--unfilled-color);
+            .progress-steps .progress-step.future .progress-title{
+                color: var(--future-label-font-color);
+            }
             
-            /* Future Steps */
-            --future-label-font-color: var( --unfilled-color);
+            .progress-steps .progress-step.disabled .progress-title{
+                color: var(--disabled-label-font-color);
+            }
 
+            .progress-steps .progress-step .progress-title {
+                z-index: 3;
+                display: var(--step-title-display);
+                position: absolute;
+                text-align: center;
+                top: calc( var(--step-width) + var(--step-title-top-padding));
+                width: var(--step-title-width);
+                font-family: var(--step-title-font);
+                color: var(--unfilled-color);
+                font-size: var(--font-size);
+                transition: color var(--animation-speed), width var(--animation-speed);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                user-select: none;
+            }
 
-            /* Labels */
-            --step-title-display: inline-block;
-            --step-title-top-padding: 5px;
-            --step-title-width: 75px; /* Note: this is overriden immedidately and when browser is resized */
-            --step-title-font: sans-serif;
-            --step-title-weight: normal;
+            .progress-steps .progress-step .progress-title {
+                font-weight: var(--step-title-weight);
+            }
+            
+            .progress-steps .progress-step.previous .progress-title {
+                color: var(--previous-label-font-color);
+            }        
 
-
-            display: flex;
-            margin: 0 auto;
-            position: relative;
-            width: calc(100% - (var(--step-title-width)-var(--step-width))/2);
-            justify-content: space-between;
-        }
-
-        /* The underlying grey line*/
-        .progress-steps::before {
-            content: '';
-            z-index: 1;
-            display: block;
-            position: absolute;
-            width: calc(100% - var(--step-width));
-            left: calc(var(--step-width)/2);
-            height: 0px;
-            top: calc( (var(--step-width)/2) - (var(--bar-thickness)/2) );
-            border: none;
-            border-bottom: var(--bar-thickness) solid var(--unfilled-color);
-        }
-
-        /* The overlapping colored value line*/
-        .progress-steps .completion-bar {
-            content: '';
-            z-index: 2;
-            display: block;
-            position: absolute;
-            width: 0%;
-            transition: width var(--animation-speed);
-            height: 0px;
-            top: calc( (var(--step-width)/2) - (var(--bar-thickness)/2) );
-            left: calc(var(--step-width)/2);
-            border: none;
-            border-bottom: var(--bar-thickness) solid var(--fill-color);
-        }
-
-        /* The colored balls */
-        .progress-steps .progress-step::before {
-            content: attr(data-step-number);
-            z-index: 3;
-            width: calc(var(--step-width) - var(--bar-thickness)*2);
-            height: calc(var(--step-width) - var(--bar-thickness)*2);
-            background-color: var(--step-color);
-            border: var(--bar-thickness) solid var(--unfilled-color);
-            color: var(--unfilled-color);
-            border-radius: var(--step-border-radius);
-            position: relative;
-            transition: background-color var(--animation-speed);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: var(--step-title-font);
-        }
-
-        .progress-steps .progress-step.previous::before, .progress-steps .progress-step.current::before{
-            color: var(--current-font-color);
-            background-color: var(--fill-color);
-            border: none;
-            width: var(--step-width);
-            height: var(--step-width);
-        }
-        
-
-        .progress-steps .progress-step.current .progress-title {
-            color: var(--current-label-font-color) !important;
-            font-weight: var(--current-label-font-weight);
-            font-weight: var(--current-step-label-weight) !important;
-        }
-        .progress-steps .progress-step.current::before {
-            background-color: var(--fill-color);
-            box-shadow: var(--current-step-shadow);
-        }
-
-
-        .progress-steps .progress-step.disabled::before {
-            background-color: var(--disabled-fill-color);
-            border-color: var(--unfilled-color);
-            color: var(--disabled-font-color);
-        }
-
-        .progress-steps .progress-step.disabled {
-            cursor: not-allowed;
-        }
-
-        .progress-steps .progress-step:not(.disabled) {
-            cursor: pointer;
-        }
-
-        .progress-steps .progress-step {
-            justify-content: space-evenly;
-            font-size: var(--font-size);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .progress-steps .progress-step.future .progress-title{
-        	color: var(--future-label-font-color);
-        }
-        
-        .progress-steps .progress-step.disabled .progress-title{
-        	color: var(--disabled-label-font-color);
-        }
-
-        .progress-steps .progress-step .progress-title {
-            z-index: 3;
-            display: var(--step-title-display);
-            position: absolute;
-            text-align: center;
-            top: calc( var(--step-width) + var(--step-title-top-padding));
-            width: var(--step-title-width);
-            font-family: var(--step-title-font);
-            color: var(--unfilled-color);
-            font-size: var(--font-size);
-            transition: color var(--animation-speed);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            user-select: none;
-        }
-
-        .progress-steps .progress-step .progress-title {
-            font-weight: var(--step-title-weight);
-        }
-        
-        .progress-steps .progress-step.previous .progress-title {
-            color: var(--previous-label-font-color);
-        }        
-
-	</style>
-    `)
+	    </style>
+        `)
 		);
 
 		this._container = stringToHTML(`<div class="progress-steps"></div>`);
@@ -233,29 +234,45 @@ class ProgressSteps extends HTMLElement {
 
 		// Set up auto resizing
 		let self = this;
-		let setStepperTitleWidths = function () {
-			if (self._options?.steps.length > 0) {
-				let padding = 3;
-				let totalWidth = self._container.getBoundingClientRect().width;
-				let widthPerSegment =
-					totalWidth / (self._options.steps.length - 1) - padding * 2;
-				self._container.style.setProperty(
-					'--step-title-width',
-					`${widthPerSegment}px`
-				);
-			}
-		};
+
 		// Handle debouncing window resizes to resize labels
-		setStepperTitleWidths();
+		this._recalculateStepperTitleWidths(self);
 		var stepperResizeDebounce;
+		let windowResizeDebounceIntervalMilliseconds = 300;
+		let debounceResizeFunction = function () {
+			clearTimeout(stepperResizeDebounce);
+			stepperResizeDebounce = setTimeout(function () {
+				self._recalculateStepperTitleWidths(self);
+			}, windowResizeDebounceIntervalMilliseconds);
+		};
+		window.addEventListener('resize', debounceResizeFunction, false);
 		window.addEventListener(
-			'resize',
-			function () {
-				clearTimeout(stepperResizeDebounce);
-				stepperResizeDebounce = setTimeout(setStepperTitleWidths, 200);
-			},
+			'orientationchange',
+			debounceResizeFunction,
 			false
 		);
+	}
+
+	// Recalculates the title widths to best fit and prevent overlap
+	_recalculateStepperTitleWidths(selfContext) {
+		// If we have steps
+		if (selfContext._options?.steps.length > 0) {
+			// Find our (potentially) new width
+			let padding = 3;
+			let totalWidth =
+				selfContext._container.getBoundingClientRect().width;
+
+			// Find the available space for each step, minus padding on either side
+			let widthPerSegment =
+				totalWidth / (selfContext._options.steps.length - 1) -
+				padding * 2;
+
+			// Set the widths of the titles via css
+			selfContext._container.style.setProperty(
+				'--step-title-width',
+				`${widthPerSegment}px`
+			);
+		}
 	}
 
 	// Sets options
@@ -438,6 +455,8 @@ class ProgressSteps extends HTMLElement {
 			});
 
 		if (this !== undefined) this._setStepInternal();
+
+		this._recalculateStepperTitleWidths(self);
 	}
 
 	// Functions
