@@ -77,17 +77,17 @@ class ProgressSteps extends HTMLElement {
                 /* Labels */
                 --step-title-display: inline-block;
                 --step-title-top-padding: 5px;
-                --step-title-width: 75px; /* Note: this is overriden immedidately and when browser is resized */
                 --step-title-font: sans-serif;
                 --step-title-weight: normal;
-
 
                 display: flex;
                 margin: 0 auto;
                 position: relative;
-                width: calc(100% - (var(--step-title-width)-var(--step-width))/1);
                 transition: width var(--animation-speed);
                 justify-content: space-between;
+
+                /* Dynamically set our width via the 2 'known' attributes updated on resizes and render */
+                width: calc(100% - (var(--known-available-width) / (var(--known-step-count) - 1)) * 1px);  
             }
 
             /* The underlying grey line*/
@@ -193,7 +193,6 @@ class ProgressSteps extends HTMLElement {
                 position: absolute;
                 text-align: center;
                 top: calc( var(--step-width) + var(--step-title-top-padding));
-                width: var(--step-title-width);
                 font-family: var(--step-title-font);
                 color: var(--unfilled-color);
                 font-size: var(--font-size);
@@ -202,10 +201,15 @@ class ProgressSteps extends HTMLElement {
                 overflow: hidden;
                 text-overflow: ellipsis;
                 user-select: none;
-            }
-
-            .progress-steps .progress-step .progress-title {
                 font-weight: var(--step-title-weight);
+
+                /* Dynamically set our own title width via the 2 'known' attributes updated on resizes and render */
+                --title-clearance: 8px;
+                width: calc(
+                            var(--known-available-width) / (var(--known-step-count) - 1) /* width per segment */
+                            * 1px /* Cast to pixels */
+                            - (var(--title-clearance) * 2) /* Account for clearance */
+                            );  
             }
             
             .progress-steps .progress-step.previous .progress-title {
@@ -235,44 +239,31 @@ class ProgressSteps extends HTMLElement {
 		// Set up auto resizing
 		let self = this;
 
-		// Handle debouncing window resizes to resize labels
-		this._recalculateStepperTitleWidths(self);
+		// Handle debouncing window resizes to resize labels & control
 		var stepperResizeDebounce;
-		let windowResizeDebounceIntervalMilliseconds = 300;
-		let debounceResizeFunction = function () {
+		let windowResizeDebounceIntervalMilliseconds = 100; /* To prevent slowdown, only look for window size changes 10 times a second */
+		this._updateKnownControlSize = function () {
 			clearTimeout(stepperResizeDebounce);
 			stepperResizeDebounce = setTimeout(function () {
-				self._recalculateStepperTitleWidths(self);
+				if (self._options === null || self._options.steps === null)
+					return;
+				self._container.style.setProperty(
+					'--known-step-count',
+					self._options.steps.length
+				);
+				self._container.style.setProperty(
+					'--known-available-width',
+					self.getBoundingClientRect().width
+				);
 			}, windowResizeDebounceIntervalMilliseconds);
 		};
-		window.addEventListener('resize', debounceResizeFunction, false);
+		this._updateKnownControlSize();
+		window.addEventListener('resize', this._updateKnownControlSize, false);
 		window.addEventListener(
 			'orientationchange',
-			debounceResizeFunction,
+			this._updateKnownControlSize,
 			false
 		);
-	}
-
-	// Recalculates the title widths to best fit and prevent overlap
-	_recalculateStepperTitleWidths(selfContext) {
-		// If we have steps
-		if (selfContext._options?.steps.length > 0) {
-			// Find our (potentially) new width
-			let padding = 3;
-			let totalWidth =
-				selfContext._container.getBoundingClientRect().width;
-
-			// Find the available space for each step, minus padding on either side
-			let widthPerSegment =
-				totalWidth / (selfContext._options.steps.length - 1) -
-				padding * 2;
-
-			// Set the widths of the titles via css
-			selfContext._container.style.setProperty(
-				'--step-title-width',
-				`${widthPerSegment}px`
-			);
-		}
 	}
 
 	// Sets options
@@ -456,7 +447,7 @@ class ProgressSteps extends HTMLElement {
 
 		if (this !== undefined) this._setStepInternal();
 
-		this._recalculateStepperTitleWidths(self);
+		setTimeout(this._updateKnownControlSize, 100);
 	}
 
 	// Functions
