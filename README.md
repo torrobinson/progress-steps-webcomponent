@@ -10,11 +10,12 @@ A web component for displaying the steps of a process and letting users move bet
 
 ### CDN
 
-Use the built file from npm from https://unpkg.com/progress-steps-webcomponent@latest
+Use the built files from npm from https://unpkg.com/progress-steps-webcomponent@latest
 
 ```html
-<!-- For example -->
-<script src="https://unpkg.com/progress-steps-webcomponent@latest"></script>
+<!-- For example, use a CDN and replace 'latest' with your intended version -->
+<link rel="stylesheet" href="https://unpkg.com/progress-steps-webcomponent@latest/dist/progress-steps.min.css"/>
+<script src="https://unpkg.com/progress-steps-webcomponent@latest/dist/progress-steps.min.js"></script>
 ```
 
 ### Manual
@@ -26,7 +27,7 @@ npm i
 npm run build
 ```
 
-And use the `dist/progress-steps.min.js` file
+And use the `dist/progress-steps.min.js` and `dist/progress-steps.min.css` files
 
 ## Configuration
 
@@ -94,53 +95,55 @@ myStepper.init({
 
 ### Styling
 
-Styling can be overridden by passing in CSS values to the `style` object. All options are entirely optional.
-The most commonly overridden value would be that of the color that the bar fills up with, `progressFillColor`
+Styling defaults can be overridden by overriding CSS variables on your component instance:
 
-```js
-myStepper.init({
-	steps: [
-		...
-	],
-	style: {
-		// The width of each step icon
-		stepWidth: 20,
-		// The font size of the step number and label
-		fontSize: 12,
-		// The border radius of the step icon
-		borderRadius: '25%',
-		// The thickness of the line/progress bar/borders
-		lineThickness: 2,
-		// The animation speed of the progress bar filling up
-		animationSpeed: '500ms',
-		// Whether or not to show labels or not
-		showLabels: true,
-		// The vertical margin of the labels, if shown
-		labelSpacing: 5,
-		// The font weight to use on step labels
-		stepLabelFontWeight: 'normal',
-		// The font color of step labels that are before the current step
-		previousLabelFontColor: 'red',
-		// The font color of the current step label
-		currentLabelFontColor: 'blue',
-		// The font weight of the current step label
-		currentStepLabelFontWeight: 'bold',
-		// The font color of step labels that are after the current step
-		futureLabelFontColor: 'green',
-		// The font color of step labels that are disabled
-		disabledLabelFontColor: 'maroon',
-		// The color to fill up, left-to-right, as steps are set to active
-		progressFillColor: '#cf78d9',
-		// The default color of the unfilled section of line and steps after the active step
-		progressUnfilledColor: '#d5dce2',
-		// The font color of the step icon that is currently active
-		currentStepFontColor: 'white',
-		// The fill-color for step icons that are after the current active step
-		futureStepFillColor: 'orange',
-		// The font color of the disabled steps
-		disabledStepFontColor: 'red',
-		// The fill-color for disabled step icons
-		disabledStepFillColor: 'blue'
-	},
-});
+```css
+#my-steps {
+	/* The color to fill up, left-to-right, as steps are set to active */
+	--progress-fill-color: #cf78d9;
+
+	/* The width of each step icon */
+	--step-width: 20;
+	/* The font size of the step number and label */
+	--font-size: 12;
+	/* The border radius of the step icon */
+	--step-border-radius: 25%;
+	/* The thickness of the line/progress bar/borders */
+	--line-thickness: 2;
+
+	/* The animation speed of the progress bar filling up */
+	--animation-speed: 500ms;
+	/* Display attribute of the step labels. Show: 'inline-block', hide: 'none' */
+	--step-label-display: none;
+	/* The vertical margin of the labels, if shown */
+	--step-label-spacing: 5;
+	
+	/* The font weight to use on step labels */
+	--step-label-font-weight: normal;
+
+	/* The font color of the step icon that is currently active */
+	--current-step-font-color: white;
+	/* The font color of the current step label */
+	--current-label-font-color: blue;
+	/* The font weight of the current step label */
+	--current-label-font-weight: bold;
+
+	/* The font color of step labels that are before the current step */
+	--previous-label-font-color: red;
+
+	/* The fill-color for step icons that are after the current active step */
+	--future-step-fill-color: orange;
+	/* The font color of step labels that are after the current step */
+	--future-label-font-color: green;
+
+	/* The font color of step labels that are disabled */
+	--disabled-label-font-color: maroon;
+	/* The font color of the disabled steps */
+	--disabled-step-font-color: red;
+	/* The fill-color for disabled step icons */
+	--disabled-step-fill-color: blue;
+
+	/* The default color of the unfilled section of line and steps after the active step */
+	--progress-unfilled-color: #d5dce2;
+}
 ```
