@@ -1,12 +1,29 @@
 <html>
 	<head>
 		<title>Progress Steps Demo</title>
-		<!-- <script src="../src/progress-steps.js"></script> -->
+		<!-- <script src="../src/progress-steps.js"></script>
+		<link rel="stylesheet" href="../src/progress-steps.css"> -->
+		
 		<script src="../dist/progress-steps.min.js"></script>
+		<link rel="stylesheet" href="../dist/progress-steps.min.css">
 	</head>
 	<body>
 		<!-- The web component -->
 		<progress-steps id="my-steps"></progress-steps>
+
+		<!-- Custom styling via CSS variables -->
+		<style>
+			 #my-steps{
+				--step-width: 20px;
+				--font-size: 12px;
+				--step-border-radius: 25%;
+				--line-thickness: 2px;
+				--animation-speed: 500ms;
+				--show-labels: true;
+				--label--spacing: 5px;
+				--fill-color: #cf78d9;
+			 }
+		</style>
 
 		<!-- API demonstration -->
 		<br />
@@ -71,40 +88,7 @@
 						onStepChanged: function (step) {
 							console.log(`Step changed to ${step}!`);
 						},
-					},
-					// Optional styling
-					style: {
-						stepWidth: 20,
-						fontSize: 12,
-						borderRadius: '25%',
-						lineThickness: 2,
-						animationSpeed: '500ms',
-
-						// Labels
-						showLabels: true,
-						labelSpacing: 5,
-						//stepLabelFontWeight: 'normal',
-
-						// Label Colors
-						//previousLabelFontColor: 'red',
-
-						//currentLabelFontColor: 'blue',
-						//currentStepLabelFontWeight: 'bold',
-
-						//futureLabelFontColor: 'green',
-
-						//disabledLabelFontColor: 'maroon',
-
-						// The fill color for the lines and bars of active and previous steps
-						progressFillColor: '#cf78d9',
-						//progressUnfilledColor: '#d5dce2'
-
-						//currentStepFontColor: 'white',
-						//futureStepFillColor: 'orange',
-
-						//disabledStepFontColor: 'red',
-						//disabledStepFillColor: 'blue'
-					},
+					}
 				});
 
 				// Set intial value
