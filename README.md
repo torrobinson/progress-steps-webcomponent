@@ -146,5 +146,5 @@ Styling defaults can be overridden by overriding CSS variables on your component
 	--disabled-step-font-color: red;
 	/* The fill-color for disabled step icons */
 	--disabled-step-fill-color: blue;
-	}
+}
 ```
