@@ -98,31 +98,33 @@ myStepper.init({
 Styling defaults can be overridden by overriding CSS variables on your component instance:
 
 ```css
-#my-steps {
+/* Ugly but complete style override demonstrating all the style components */
+#my-steps{
 	/* The color to fill up, left-to-right, as steps are set to active */
 	--progress-fill-color: #cf78d9;
+	/* The default color of the unfilled section of line and steps after the active step */
+	--progress-unfilled-color: purple;
 
 	/* The width of each step icon */
-	--step-width: 20;
+	--step-width: 20px;
 	/* The font size of the step number and label */
-	--font-size: 12;
+	--font-size: 12px;
 	/* The border radius of the step icon */
 	--step-border-radius: 25%;
 	/* The thickness of the line/progress bar/borders */
-	--line-thickness: 2;
+	--line-thickness: 3px;
 
 	/* The animation speed of the progress bar filling up */
 	--animation-speed: 500ms;
 	/* Display attribute of the step labels. Show: 'inline-block', hide: 'none' */
-	--step-label-display: none;
+	--step-label-display: 'inline-block';
 	/* The vertical margin of the labels, if shown */
-	--step-label-spacing: 5;
-	
+	--step-label-spacing: 5px;
 	/* The font weight to use on step labels */
 	--step-label-font-weight: normal;
 
 	/* The font color of the step icon that is currently active */
-	--current-step-font-color: white;
+	--current-step-font-color: red;
 	/* The font color of the current step label */
 	--current-label-font-color: blue;
 	/* The font weight of the current step label */
@@ -130,6 +132,8 @@ Styling defaults can be overridden by overriding CSS variables on your component
 
 	/* The font color of step labels that are before the current step */
 	--previous-label-font-color: red;
+	/* The font color of the step icons that are before the current step */
+	--previous-step-font-color: pink;
 
 	/* The fill-color for step icons that are after the current active step */
 	--future-step-fill-color: orange;
@@ -142,8 +146,5 @@ Styling defaults can be overridden by overriding CSS variables on your component
 	--disabled-step-font-color: red;
 	/* The fill-color for disabled step icons */
 	--disabled-step-fill-color: blue;
-
-	/* The default color of the unfilled section of line and steps after the active step */
-	--progress-unfilled-color: #d5dce2;
-}
+	}
 ```

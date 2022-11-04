@@ -66,7 +66,7 @@ class ProgressSteps extends HTMLElement {
                 height: 0px;
                 top: calc( (var(--step-width)/2) - (var(--line-thickness)/2) );
                 border: none;
-                border-bottom: var(--line-thickness) solid var(--unfilled-color);
+                border-bottom: var(--line-thickness) solid var(--progress-unfilled-color);
             }
 
             /* The overlapping colored value line*/
@@ -81,7 +81,7 @@ class ProgressSteps extends HTMLElement {
                 top: calc( (var(--step-width)/2) - (var(--line-thickness)/2) );
                 left: calc(var(--step-width)/2);
                 border: none;
-                border-bottom: var(--line-thickness) solid var(--fill-color);
+                border-bottom: var(--line-thickness) solid var(--progress-fill-color);
             }
 
             /* The colored balls */
@@ -91,8 +91,8 @@ class ProgressSteps extends HTMLElement {
                 width: calc(var(--step-width) - var(--line-thickness)*2);
                 height: calc(var(--step-width) - var(--line-thickness)*2);
                 background-color: var(--future-step-fill-color);
-                border: var(--line-thickness) solid var(--unfilled-color);
-                color: var(--unfilled-color);
+                border: var(--line-thickness) solid var(--progress-unfilled-color);
+                color: var(--progress-unfilled-color);
                 border-radius: var(--step-border-radius);
                 position: relative;
                 transition: background-color var(--animation-speed);
@@ -104,10 +104,14 @@ class ProgressSteps extends HTMLElement {
 
             .progress-steps .progress-step.previous::before, .progress-steps .progress-step.current::before{
                 color: var(--current-step-font-color);
-                background-color: var(--fill-color);
+                background-color: var(--progress-fill-color);
                 border: none;
                 width: var(--step-width);
                 height: var(--step-width);
+            }
+
+			.progress-steps .progress-step.previous::before{
+                color: var(--previous-step-font-color);
             }
             
 
@@ -117,14 +121,14 @@ class ProgressSteps extends HTMLElement {
                 font-weight: var(--current-label-font-weight) !important;
             }
             .progress-steps .progress-step.current::before {
-                background-color: var(--fill-color);
+                background-color: var(--progress-fill-color);
                 box-shadow: var(--current-step-shadow);
             }
 
 
             .progress-steps .progress-step.disabled::before {
                 background-color: var(--disabled-step-fill-color);
-                border-color: var(--unfilled-color);
+                border-color: var(--progress-unfilled-color);
                 color: var(--disabled-step-font-color);
             }
 
@@ -159,7 +163,7 @@ class ProgressSteps extends HTMLElement {
                 text-align: center;
                 top: calc( var(--step-width) + var(--step-label-spacing));
                 font-family: var(--step-title-font);
-                color: var(--unfilled-color);
+                color: var(--progress-unfilled-color);
                 font-size: var(--font-size);
                 transition: color var(--animation-speed), width var(--animation-speed);
                 white-space: nowrap;
