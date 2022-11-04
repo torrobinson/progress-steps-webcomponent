@@ -90,7 +90,7 @@ class ProgressSteps extends HTMLElement {
                 z-index: 3;
                 width: calc(var(--step-width) - var(--line-thickness)*2);
                 height: calc(var(--step-width) - var(--line-thickness)*2);
-                background-color: var(--step-color);
+                background-color: var(--future-step-fill-color);
                 border: var(--line-thickness) solid var(--unfilled-color);
                 color: var(--unfilled-color);
                 border-radius: var(--step-border-radius);
@@ -103,7 +103,7 @@ class ProgressSteps extends HTMLElement {
             }
 
             .progress-steps .progress-step.previous::before, .progress-steps .progress-step.current::before{
-                color: var(--current-font-color);
+                color: var(--current-step-font-color);
                 background-color: var(--fill-color);
                 border: none;
                 width: var(--step-width);
@@ -114,7 +114,7 @@ class ProgressSteps extends HTMLElement {
             .progress-steps .progress-step.current .progress-title {
                 color: var(--current-label-font-color) !important;
                 font-weight: var(--current-label-font-weight);
-                font-weight: var(--current-step-label-weight) !important;
+                font-weight: var(--current-label-font-weight) !important;
             }
             .progress-steps .progress-step.current::before {
                 background-color: var(--fill-color);
@@ -123,9 +123,9 @@ class ProgressSteps extends HTMLElement {
 
 
             .progress-steps .progress-step.disabled::before {
-                background-color: var(--disabled-fill-color);
+                background-color: var(--disabled-step-fill-color);
                 border-color: var(--unfilled-color);
-                color: var(--disabled-font-color);
+                color: var(--disabled-step-font-color);
             }
 
             .progress-steps .progress-step.disabled {
@@ -154,10 +154,10 @@ class ProgressSteps extends HTMLElement {
 
             .progress-steps .progress-step .progress-title {
                 z-index: 3;
-                display: var(--step-title-display);
+                display: var(--step-label-display);
                 position: absolute;
                 text-align: center;
-                top: calc( var(--step-width) + var(--step-title-top-padding));
+                top: calc( var(--step-width) + var(--step-label-spacing));
                 font-family: var(--step-title-font);
                 color: var(--unfilled-color);
                 font-size: var(--font-size);
@@ -166,7 +166,7 @@ class ProgressSteps extends HTMLElement {
                 overflow: hidden;
                 text-overflow: ellipsis;
                 user-select: none;
-                font-weight: var(--step-title-weight);
+                font-weight: var(--step-label-font-weight);
 
                 /* Dynamically set our own title width via the 2 'known' attributes updated on resizes and render */
                 --title-clearance: 8px;
