@@ -1,12 +1,32 @@
 <html>
 	<head>
 		<title>Progress Steps Demo</title>
-		<!-- <script src="../src/progress-steps.js"></script> -->
+		<!-- <script src="../src/progress-steps.js"></script>
+		<link rel="stylesheet" href="../src/progress-steps.css"> -->
+		
 		<script src="../dist/progress-steps.min.js"></script>
+		<link rel="stylesheet" href="../dist/progress-steps.min.css">
+
+		<!-- Demo-only dependency-->
+		<script src="https://unpkg.com/@yaireo/knobs@1.3.5"></script>
 	</head>
 	<body>
 		<!-- The web component -->
 		<progress-steps id="my-steps"></progress-steps>
+
+		<!-- Custom styling via CSS variables -->
+		<style>
+			 #my-steps{
+				--step-width: 20px;
+				--font-size: 12px;
+				--step-border-radius: 25%;
+				--line-thickness: 2px;
+				--animation-speed: 500ms;
+				--step-label-display: inline-block;
+				--label-spacing: 5px;
+				--progress-fill-color: #cf78d9;
+			 }
+		</style>
 
 		<!-- API demonstration -->
 		<br />
@@ -71,40 +91,7 @@
 						onStepChanged: function (step) {
 							console.log(`Step changed to ${step}!`);
 						},
-					},
-					// Optional styling
-					style: {
-						stepWidth: 20,
-						fontSize: 12,
-						borderRadius: '25%',
-						lineThickness: 2,
-						animationSpeed: '500ms',
-
-						// Labels
-						showLabels: true,
-						labelSpacing: 5,
-						//stepLabelFontWeight: 'normal',
-
-						// Label Colors
-						//previousLabelFontColor: 'red',
-
-						//currentLabelFontColor: 'blue',
-						//currentStepLabelFontWeight: 'bold',
-
-						//futureLabelFontColor: 'green',
-
-						//disabledLabelFontColor: 'maroon',
-
-						// The fill color for the lines and bars of active and previous steps
-						progressFillColor: '#cf78d9',
-						//progressUnfilledColor: '#d5dce2'
-
-						//currentStepFontColor: 'white',
-						//futureStepFillColor: 'orange',
-
-						//disabledStepFontColor: 'red',
-						//disabledStepFillColor: 'blue'
-					},
+					}
 				});
 
 				// Set intial value
@@ -169,6 +156,209 @@
 					.querySelector('#disable-four')
 					.addEventListener('click', function () {
 						myStepper.disableStep(4);
+					});
+
+
+
+				// Set up Knobs for CSS variable changes
+				let triggerWindowChange = () => window.dispatchEvent(new Event('resize'));
+				var progressKnobs = new Knobs({
+						theme: {
+							position: 'bottom right',
+							'base-color': 'rgba(0, 0, 0, 0.5)',
+							flow: 'compact',
+						},
+						visible: 1,
+						CSSVarTarget: document.querySelector('#my-steps'),
+						knobs: [
+
+								{
+									cssVar: ['progress-fill-color'],
+									label: '--progress-fill-color',
+									type: 'color',
+									value: '#7A5BD3',
+									onChange: triggerWindowChange
+								},
+
+								{
+									cssVar: ['progress-unfilled-color'],
+									label: '--progress-unfilled-color',
+									type: 'color',
+									value: '#d5dce2',
+									onChange: triggerWindowChange
+								},
+
+								{
+									cssVar: ['step-width', 'px'],
+									label: '--step-width',
+									type: 'range',
+									value: 20,
+									min: 15,
+									max: 50,
+									step: 1,
+									onChange: triggerWindowChange
+								},
+
+								{
+									cssVar: ['font-size', 'px'],
+									label: '--font-size',
+									type: 'range',
+									value: 12,
+									min: 9,
+									max: 48,
+									step: 1,
+									onChange: triggerWindowChange
+								},
+
+								{
+									cssVar: ['step-border-radius', '%'],
+									label: '--step-border-radius',
+									type: 'range',
+									value: 25,
+									min: 0,
+									max: 100,
+									step: 1,
+									onChange: triggerWindowChange
+								},
+
+								{
+									cssVar: ['line-thickness', 'px'],
+									label: '--line-thickness',
+									type: 'range',
+									value: 3,
+									min: 1,
+									max: 10,
+									step: 1,
+									onChange: triggerWindowChange
+								},
+
+								{
+									cssVar: ['animation-speed', 'ms'],
+									label: '--animation-speed',
+									type: 'range',
+									value: 250,
+									min: 0,
+									max: 2000,
+									step: 1,
+								},
+
+								{
+									cssVar: ['step-label-display'],
+									label: '--step-label-display',
+									type: 'select',
+									options: [
+										'inline-block', 'none'
+									],
+									value: 'inline-block',
+									onChange: triggerWindowChange
+								},
+
+								{
+									cssVar: ['step-label-spacing', 'px'],
+									label: '--step-label-spacing',
+									type: 'range',
+									value: 5,
+									min: 0,
+									max: 20,
+									step: 1,
+									onChange: triggerWindowChange
+								},
+
+								{
+									cssVar: ['step-label-font-weight'],
+									label: '--step-label-font-weight',
+									type: 'select',
+									options: [
+										'normal','bold'
+									],
+									value: 'normal',
+									onChange: triggerWindowChange
+								},
+
+								{
+									cssVar: ['current-step-font-color'],
+									label: '--current-step-font-color',
+									type: 'color',
+									value: 'white',
+									onChange: triggerWindowChange
+								},
+
+								{
+									cssVar: ['current-label-font-color'],
+									label: '--current-label-font-color',
+									type: 'color',
+									value: '#7A5BD3',
+									onChange: triggerWindowChange
+								},
+
+								{
+									cssVar: ['current-label-font-weight'],
+									label: '--current-label-font-weight',
+									type: 'select',
+									options: [
+										'normal','bold'
+									],
+									value: 'normal',
+									onChange: triggerWindowChange
+								},
+
+								{
+									cssVar: ['previous-label-font-color'],
+									label: '--previous-label-font-color',
+									type: 'color',
+									value: 'black',
+									onChange: triggerWindowChange
+								},
+
+								{
+									cssVar: ['previous-step-font-color'],
+									label: '--previous-step-font-color',
+									type: 'color',
+									value: 'white',
+									onChange: triggerWindowChange
+								},
+
+								{
+									cssVar: ['future-step-fill-color'],
+									label: '--future-step-fill-color',
+									type: 'color',
+									value: 'white',
+									onChange: triggerWindowChange
+								},
+
+								{
+									cssVar: ['future-label-font-color'],
+									label: '--future-label-font-color',
+									type: 'color',
+									value: '#d5dce2',
+									onChange: triggerWindowChange
+								},
+
+								{
+									cssVar: ['disabled-label-font-color'],
+									label: '--disabled-label-font-color',
+									type: 'color',
+									value: '#d5dce2',
+									onChange: triggerWindowChange
+								},
+
+								{
+									cssVar: ['disabled-step-font-color'],
+									label: '--disabled-step-font-color',
+									type: 'color',
+									value: '#8B9DAC',
+									onChange: triggerWindowChange
+								},
+
+								{
+									cssVar: ['disabled-step-fill-color'],
+									label: '--disabled-step-fill-color',
+									type: 'color',
+									value: '#d5dce2',
+									onChange: triggerWindowChange
+								},
+
+							]
 					});
 			});
 		</script>

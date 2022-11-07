@@ -1,0 +1,38 @@
+/* Component default styles */
+progress-steps {
+	/* All Steps */
+	--font-size: 15px;
+	--line-thickness: 2px;
+	--step-border-radius: 50%;
+	--animation-speed: 0.5s;
+
+	/* Default, Inactive Steps */
+	--future-step-fill-color: white;
+	--step-width: 35px;
+	
+	/* Previous icons */
+	--previous-label-font-color: black;
+	--previous-step-font-color: white;
+
+	/* Current Steps */
+	--progress-fill-color: #7A5BD3;
+	--current-step-font-color: white;
+	--current-label-font-weight: bold;
+	--current-step-shadow: none;
+	--current-label-font-color: var(--progress-fill-color);
+
+	
+	--progress-unfilled-color: #d5dce2;
+	--disabled-step-fill-color: var(--progress-unfilled-color);
+	--disabled-step-font-color: #8B9DAC;
+	--disabled-label-font-color: var(--progress-unfilled-color);
+	
+	/* Future Steps */
+	--future-label-font-color: var( --progress-unfilled-color);
+
+	/* Labels */
+	--step-label-display: inline-block;
+	--step-label-spacing: 5px;
+	--step-title-font: sans-serif;
+	--step-label-font-weight: normal;
+}

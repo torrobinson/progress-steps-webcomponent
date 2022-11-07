@@ -45,41 +45,6 @@ class ProgressSteps extends HTMLElement {
 			stringToHTML(`
     	<style>
             .progress-steps {
-                /* All Steps */
-                --font-size: 15px;
-                --bar-thickness: 2px;
-                --step-border-radius: 50%;
-                --animation-speed: 0.5s;
-
-                /* Default, Inactive Steps */
-                --step-color: white;
-                --step-width: 35px;
-                
-                --previous-label-font-color: black;
-
-                /* Current Steps */
-                --fill-color: #7A5BD3;
-                --current-font-color: white;
-                --current-step-label-weight: bold;
-                --current-step-shadow: none;
-                --current-label-font-color: var(--fill-color);
-
-                
-                --unfilled-color: #d5dce2;
-                --disabled-fill-color: var(--unfilled-color);
-                --disabled-font-color: #8B9DAC;
-                --disabled-label-font-color: var(--unfilled-color);
-                
-                /* Future Steps */
-                --future-label-font-color: var( --unfilled-color);
-
-
-                /* Labels */
-                --step-title-display: inline-block;
-                --step-title-top-padding: 5px;
-                --step-title-font: sans-serif;
-                --step-title-weight: normal;
-
                 display: flex;
                 margin: 0 auto;
                 position: relative;
@@ -99,9 +64,9 @@ class ProgressSteps extends HTMLElement {
                 width: calc(100% - var(--step-width));
                 left: calc(var(--step-width)/2);
                 height: 0px;
-                top: calc( (var(--step-width)/2) - (var(--bar-thickness)/2) );
+                top: calc( (var(--step-width)/2) - (var(--line-thickness)/2) );
                 border: none;
-                border-bottom: var(--bar-thickness) solid var(--unfilled-color);
+                border-bottom: var(--line-thickness) solid var(--progress-unfilled-color);
             }
 
             /* The overlapping colored value line*/
@@ -113,21 +78,21 @@ class ProgressSteps extends HTMLElement {
                 width: 0%;
                 transition: width var(--animation-speed);
                 height: 0px;
-                top: calc( (var(--step-width)/2) - (var(--bar-thickness)/2) );
+                top: calc( (var(--step-width)/2) - (var(--line-thickness)/2) );
                 left: calc(var(--step-width)/2);
                 border: none;
-                border-bottom: var(--bar-thickness) solid var(--fill-color);
+                border-bottom: var(--line-thickness) solid var(--progress-fill-color);
             }
 
             /* The colored balls */
             .progress-steps .progress-step::before {
                 content: attr(data-step-number);
                 z-index: 3;
-                width: calc(var(--step-width) - var(--bar-thickness)*2);
-                height: calc(var(--step-width) - var(--bar-thickness)*2);
-                background-color: var(--step-color);
-                border: var(--bar-thickness) solid var(--unfilled-color);
-                color: var(--unfilled-color);
+                width: calc(var(--step-width) - var(--line-thickness)*2);
+                height: calc(var(--step-width) - var(--line-thickness)*2);
+                background-color: var(--future-step-fill-color);
+                border: var(--line-thickness) solid var(--progress-unfilled-color);
+                color: var(--progress-unfilled-color);
                 border-radius: var(--step-border-radius);
                 position: relative;
                 transition: background-color var(--animation-speed);
@@ -138,29 +103,33 @@ class ProgressSteps extends HTMLElement {
             }
 
             .progress-steps .progress-step.previous::before, .progress-steps .progress-step.current::before{
-                color: var(--current-font-color);
-                background-color: var(--fill-color);
+                color: var(--current-step-font-color);
+                background-color: var(--progress-fill-color);
                 border: none;
                 width: var(--step-width);
                 height: var(--step-width);
+            }
+
+			.progress-steps .progress-step.previous::before{
+                color: var(--previous-step-font-color);
             }
             
 
             .progress-steps .progress-step.current .progress-title {
                 color: var(--current-label-font-color) !important;
                 font-weight: var(--current-label-font-weight);
-                font-weight: var(--current-step-label-weight) !important;
+                font-weight: var(--current-label-font-weight) !important;
             }
             .progress-steps .progress-step.current::before {
-                background-color: var(--fill-color);
+                background-color: var(--progress-fill-color);
                 box-shadow: var(--current-step-shadow);
             }
 
 
             .progress-steps .progress-step.disabled::before {
-                background-color: var(--disabled-fill-color);
-                border-color: var(--unfilled-color);
-                color: var(--disabled-font-color);
+                background-color: var(--disabled-step-fill-color);
+                border-color: var(--progress-unfilled-color);
+                color: var(--disabled-step-font-color);
             }
 
             .progress-steps .progress-step.disabled {
@@ -189,19 +158,19 @@ class ProgressSteps extends HTMLElement {
 
             .progress-steps .progress-step .progress-title {
                 z-index: 3;
-                display: var(--step-title-display);
+                display: var(--step-label-display);
                 position: absolute;
                 text-align: center;
-                top: calc( var(--step-width) + var(--step-title-top-padding));
+                top: calc( var(--step-width) + var(--step-label-spacing));
                 font-family: var(--step-title-font);
-                color: var(--unfilled-color);
+                color: var(--progress-unfilled-color);
                 font-size: var(--font-size);
                 transition: color var(--animation-speed), width var(--animation-speed);
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 user-select: none;
-                font-weight: var(--step-title-weight);
+                font-weight: var(--step-label-font-weight);
 
                 /* Dynamically set our own title width via the 2 'known' attributes updated on resizes and render */
                 --title-clearance: 8px;
@@ -233,7 +202,6 @@ class ProgressSteps extends HTMLElement {
 			events: {
 				onStepChanged: function (stepNumber, stepData) {},
 			},
-			style: {},
 		};
 
 		// Set up auto resizing
@@ -282,93 +250,6 @@ class ProgressSteps extends HTMLElement {
 		} else {
 			this._stepNumber = -1;
 			console.warn('You must provide at least 1 step');
-		}
-
-		// Add in user style overrides
-		if (this._options.style !== undefined) {
-			let rules = '';
-			for (let styleName in this._options.style) {
-				let cssVariableName = '';
-				let value = this._options.style[styleName];
-
-				if (styleName === 'stepWidth') {
-					cssVariableName = '--step-width';
-					if (!isNaN(value)) {
-						value = value + 'px';
-					}
-				} else if (styleName === 'fontSize') {
-					cssVariableName = '--font-size';
-					if (!isNaN(value)) {
-						value = value + 'px';
-					}
-				} else if (styleName === 'borderRadius') {
-					cssVariableName = '--step-border-radius';
-					if (!isNaN(value)) {
-						value = value + 'px';
-					}
-				} else if (styleName === 'lineThickness') {
-					cssVariableName = '--bar-thickness';
-					if (!isNaN(value)) {
-						value = value + 'px';
-					}
-				} else if (styleName === 'animationSpeed') {
-					cssVariableName = '--animation-speed';
-					if (!isNaN(value)) {
-						value = value + 'ms';
-					}
-				} else if (styleName === 'showLabels') {
-					cssVariableName = '--step-title-display';
-					if (!value) {
-						value = 'none';
-					} else {
-						continue;
-					}
-				} else if (styleName === 'labelSpacing') {
-					cssVariableName = '--step-title-top-padding';
-					if (!isNaN(value)) {
-						value = value + 'px';
-					}
-				} else if (styleName === 'progressFillColor') {
-					cssVariableName = '--fill-color';
-				} else if (styleName === 'currentStepFontColor') {
-					cssVariableName = '--current-font-color';
-				} else if (styleName === 'currentStepLabelFontWeight') {
-					cssVariableName = '--current-step-label-weight';
-				} else if (styleName === 'stepLabelFontWeight') {
-					cssVariableName = '--step-title-weight';
-				} else if (styleName === 'futureStepFillColor') {
-					cssVariableName = '--step-color';
-				} else if (styleName === 'disabledStepFontColor') {
-					cssVariableName = '--disabled-font-color';
-				} else if (styleName === 'previousLabelFontColor') {
-					cssVariableName = '--previous-label-font-color';
-				} else if (styleName === 'currentLabelFontColor') {
-					cssVariableName = '--current-label-font-color';
-				} else if (styleName === 'futureLabelFontColor') {
-					cssVariableName = '--future-label-font-color';
-				} else if (styleName === 'disabledLabelFontColor') {
-					cssVariableName = '--disabled-label-font-color';
-				} else if (styleName === 'progressUnfilledColor') {
-					cssVariableName = '--unfilled-color';
-				} else if (styleName === 'disabledStepFillColor') {
-					cssVariableName = '--disabled-fill-color';
-				}
-
-				rules += `
-                ${cssVariableName}: ${value} !important;
-            `;
-			}
-
-			// Append the user overrides at the end of the shadow dom
-			this._shadowRoot.appendChild(
-				stringToHTML(`
-            <style>
-              .progress-steps{
-             		 ${rules}
-              }
-            </style>
-        `)
-			);
 		}
 
 		// Render
